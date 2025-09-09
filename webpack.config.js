@@ -3,8 +3,9 @@ const path = require("path");
 module.exports = {
   mode: "production", // Minified
   entry: {
-    // What file to take and where to put it
-    ["global"]: "./src/globals.js",
+    ["components/buttonAnimations"]: "./src/components/buttonAnimations.js",
+    ["components/navMenu"]: "./src/components/navMenu.js",
+    ["globals"]: "./src/globals.js",
     ["home-page"]: "./src/home-page.js",
   },
   output: {

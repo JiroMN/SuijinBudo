@@ -1,0 +1,1 @@
+!function(o,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("components/buttonAnimations",[],t):"object"==typeof exports?exports["components/buttonAnimations"]=t():o["components/buttonAnimations"]=t()}(this,()=>(console.log("Hello from buttonAnimations"),{}));
