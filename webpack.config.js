@@ -7,6 +7,7 @@ module.exports = {
     ["components/navMenu"]: "./src/components/navMenu.js",
     ["globals"]: "./src/globals.js",
     ["home-page"]: "./src/home-page.js",
+    ["index"]: "./src/index.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),

@@ -1,1 +1,1 @@
-!function(o,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define("globals",[],e):"object"==typeof exports?exports.globals=e():o.globals=e()}(this,()=>(console.log("Hello from globals"),{}));
+!function(e,o){"object"==typeof exports&&"object"==typeof module?module.exports=o():"function"==typeof define&&define.amd?define("globals",[],o):"object"==typeof exports?exports.globals=o():e.globals=o()}(this,()=>(gsap.defaults({ease:"expo.out",duration:.35}),{}));
