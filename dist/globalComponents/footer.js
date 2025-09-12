@@ -1,0 +1,1 @@
+!function(o,e){"object"==typeof exports&&"object"==typeof module?module.exports={}:"function"==typeof define&&define.amd?define("globalComponents/footer",[],e):"object"==typeof exports?exports["globalComponents/footer"]={}:o["globalComponents/footer"]={}}(this,()=>({}));

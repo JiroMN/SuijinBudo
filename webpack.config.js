@@ -7,7 +7,10 @@ module.exports = {
     ["global/scrollSmoother"]: "./src/global/scrollSmoother.js",
     ["globalComponents/buttonAnimations"]:
       "./src/globalComponents/buttonAnimations.js",
-    ["globalComponents/navMenu"]: "./src/globalComponents/navMenu.js",
+    ["globalComponents/footer"]: "./src/globalComponents/footer.js",
+    ["globalComponents/infoShortcuts"]:
+      "./src/globalComponents/infoShortcuts.js",
+    ["globalComponents/navigation"]: "./src/globalComponents/navigation.js",
     ["home/about"]: "./src/home/about.js",
     ["home/hero"]: "./src/home/hero.js",
     ["index"]: "./src/index.js",

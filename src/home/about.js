@@ -10,10 +10,6 @@ const aboutParagraphWrapper = $(".about-paragraph-wrapper");
 // Basestates
 gsap.set(aboutParagraph, { color: getHexCode("--colored--background") });
 
-// Split Text
-// split elements with the class "split" into words and characters
-// let split = SplitText.create(aboutParagraph, { type: "lines" });
-
 // Scrolltrigger
 let tl = gsap.timeline({
   scrollTrigger: {
@@ -37,7 +33,7 @@ tl.from(aboutParagraph[0], {
       yPercent: -100,
       autoAlpha: 0,
       filter: "blur(15px)",
-      duration: 2,
+      duration: 4,
     },
     ">"
   )
@@ -47,7 +43,7 @@ tl.from(aboutParagraph[0], {
       yPercent: 100,
       autoAlpha: 0,
       filter: "blur(15px)",
-      duration: 2,
+      duration: 4,
     },
     "<"
   )
@@ -57,7 +53,7 @@ tl.from(aboutParagraph[0], {
       yPercent: -100,
       autoAlpha: 0,
       filter: "blur(15px)",
-      duration: 2,
+      duration: 4,
     },
     ">"
   )
@@ -67,7 +63,7 @@ tl.from(aboutParagraph[0], {
       yPercent: 100,
       autoAlpha: 0,
       filter: "blur(15px)",
-      duration: 2,
+      duration: 4,
     },
     "<"
   )
@@ -77,17 +73,17 @@ tl.from(aboutParagraph[0], {
       yPercent: -100,
       autoAlpha: 0,
       filter: "blur(15px)",
-      duration: 2,
+      duration: 4,
     },
     ">"
   )
   .to(
-    $("body"),
+    $("body, .page-wrapper"),
     { background: getHexCode("--colored--background"), duration: 4 },
     "<"
   )
   .to(
     aboutParagraph[2],
-    { color: getHexCode("--colored--foreground"), duration: 4 },
+    { color: getHexCode("--colored--foreground"), duration: 1 },
     "<"
   );

@@ -1,4 +1,3 @@
-import { autocompleteClasses } from "@mui/joy";
 import { getHexCode } from "../helpers/getHexCode";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -52,8 +51,8 @@ let circleGrowTL = gsap.timeline({
 
 circleGrowTL
   .to(backdropCircle, {
-    width: "100dvw",
-    height: "100dvw",
+    width: "125vw",
+    height: "125vw",
     duration: 8,
   })
   .to(
@@ -73,10 +72,10 @@ circleGrowTL
   )
   .to(gradient, { autoAlpha: 0, duration: 2 }, "<")
   .to(
-    $("body"),
+    $("body, .page-wrapper"),
     {
       background: getHexCode("--colored--foreground"),
       duration: 5,
     },
-    "<50%"
+    "<"
   );
