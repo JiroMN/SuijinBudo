@@ -1,0 +1,1 @@
+!function(o,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define("globalComponents/navMenu",[],e):"object"==typeof exports?exports["globalComponents/navMenu"]=e():o["globalComponents/navMenu"]=e()}(this,()=>(console.log("Hello from NavMenu"),{}));

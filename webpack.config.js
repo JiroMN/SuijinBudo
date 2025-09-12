@@ -3,10 +3,13 @@ const path = require("path");
 module.exports = {
   mode: "production", // Minified
   entry: {
-    ["components/buttonAnimations"]: "./src/components/buttonAnimations.js",
-    ["components/navMenu"]: "./src/components/navMenu.js",
-    ["globals"]: "./src/globals.js",
-    ["home-page"]: "./src/home-page.js",
+    ["global/globals"]: "./src/global/globals.js",
+    ["global/scrollSmoother"]: "./src/global/scrollSmoother.js",
+    ["globalComponents/buttonAnimations"]:
+      "./src/globalComponents/buttonAnimations.js",
+    ["globalComponents/navMenu"]: "./src/globalComponents/navMenu.js",
+    ["home/about"]: "./src/home/about.js",
+    ["home/hero"]: "./src/home/hero.js",
     ["index"]: "./src/index.js",
   },
   output: {
