@@ -29,8 +29,6 @@ infoShortcut.on("mouseenter", function () {
     defaults: { ease: "none" },
   });
 
-  console.log($(this));
-
   tl.to($children, {
     color: getHexCode("--colored--background"),
   });

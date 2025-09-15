@@ -1,10 +1,19 @@
+import { getHexCode } from "../helpers/getHexCode";
 // Selectors
 const navbar = $(".navigation-bar");
+const navMenu = $(".navigation-menu");
 const navbarButton = $(".navigation-bar-button-wrapper");
 const emblems = $(".navigation-menu-info-emblem");
 
+const linkWrapper = $(".navigation-menu-link-list-item");
+
 // Flags
-let isOpen = true;
+let isOpen = false;
+
+// Base States
+gsap.set(navMenu, { display: "flex", autoAlpha: 0 });
+gsap.set(emblems.not(emblems.eq(0)), { autoAlpha: 0, filter: "blur(8px)" });
+gsap.set(emblems.eq(0), { autoAlpha: 1, filter: "blur(0px)" });
 
 // Button Hover
 navbarButton.on("mouseenter", function () {
@@ -24,65 +33,98 @@ navbarButton.on("mouseenter", function () {
   });
 });
 
+// Links hover handlers
+linkWrapper.on("mouseenter", function () {
+  const $elem = $(this);
+  const $shown = $elem.find(".shown");
+  const $hidden = $elem.find(".hidden");
+  const $counter = $elem.find(".navigation-menu-link-list-item-counter");
+
+  let tl = gsap.timeline({
+    paused: true,
+    defaults: { ease: "none", duration: 0.3 },
+  });
+  tl.fromTo(
+    $shown,
+    { autoAlpha: 1, yPercent: 0 },
+    { autoAlpha: 0, yPercent: -50 }
+  )
+    .fromTo(
+      $hidden,
+      {
+        autoAlpha: 0,
+        yPercent: 50,
+      },
+      {
+        autoAlpha: 1,
+        yPercent: 0,
+      },
+      "<"
+    )
+    .fromTo(
+      $counter,
+      { backgroundColor: getHexCode("--colored--secondary") },
+      { backgroundColor: getHexCode("--colored--accent") },
+      "<"
+    );
+
+  gsap.to(tl, { time: tl.duration(), ease: "power2.out", overwrite: true });
+
+  $elem.on("mouseleave", function () {
+    gsap.to(tl, { time: 0, ease: "power2.out", overwrite: true });
+  });
+});
+
 // Toggling Menu
+navbarButton.on("click", function () {
+  const $btn = $(this);
+  const $menuBar = $(".navigation-menu-bar");
+  const $menuLinksRow = $(".navigation-menu-row.links");
+  const $menuInfoRow = $(".navigation-menu-row.info");
 
-// Navigation Emblems
+  if ($btn.attr("menu-toggle") === "open") {
+    console.log("Open Menu");
+    let openTL = gsap.timeline({
+      onComplete: () => alternatingEmblems.play(0),
+      defaults: { duration: 0.75 },
+    });
+    openTL
+      .to(navMenu, { autoAlpha: 1 })
+      .fromTo($menuLinksRow, { xPercent: -100 }, { xPercent: 0 }, "<50%")
+      .fromTo($menuInfoRow, { xPercent: 100 }, { xPercent: 0 }, "<")
+      .fromTo($menuBar, { yPercent: -100 }, { yPercent: 0 }, "<50%");
+  } else if ($btn.attr("menu-toggle") === "close") {
+    console.log("Close Menu");
+    let closeTL = gsap.timeline({
+      onComplete: () => alternatingEmblems.pause(0),
+      defaults: {
+        duration: 0.75,
+      },
+    });
+    closeTL
+      .fromTo($menuBar, { yPercent: 0 }, { yPercent: -100 })
+      .fromTo($menuLinksRow, { xPercent: 0 }, { xPercent: -100 }, "<")
+      .fromTo($menuInfoRow, { xPercent: 0 }, { xPercent: 100 }, "<")
+      .fromTo(navMenu, { autoAlpha: 1 }, { autoAlpha: 0 });
+  }
+});
 
+// Navigation Menu Emblems
 let alternatingEmblems = gsap.timeline({
   paused: true,
   repeat: -1,
-  defaults: { duration: 1.5 },
+  defaults: { duration: 1, ease: "power2.out" },
 });
 alternatingEmblems
-  .set(emblems, { autoAlpha: 0 })
-  // Start
-  .fromTo(
-    emblems[0],
-    { autoAlpha: 0, filter: "blur(8px)" },
-    { autoAlpha: 1, filter: "blur(0px)" }
-  )
   //   0 -> 1
-  .fromTo(
-    emblems[0],
-    { autoAlpha: 1, filter: "blur(0px)" },
-    { autoAlpha: 0, filter: "blur(8px)" },
-    ">1"
-  )
-  .fromTo(
-    emblems[1],
-    { autoAlpha: 0, filter: "blur(8px)" },
-    { autoAlpha: 1, filter: "blur(0px)" },
-    "<"
-  )
+  .to($(emblems[0]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
+  .to($(emblems[1]), { autoAlpha: 1, filter: "blur(0px)" }, "<")
   //   1 -> 2
-  .fromTo(
-    emblems[1],
-    { autoAlpha: 1, filter: "blur(0px)" },
-    { autoAlpha: 0, filter: "blur(8px)" },
-    ">1"
-  )
-  .fromTo(
-    emblems[2],
-    { autoAlpha: 0, filter: "blur(8px)" },
-    { autoAlpha: 1, filter: "blur(0px)" },
-    "<"
-  )
+  .to($(emblems[1]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
+  .to($(emblems[2]), { autoAlpha: 1, filter: "blur(0px)" }, "<")
   //   2 -> 3
-  .fromTo(
-    emblems[2],
-    { autoAlpha: 1, filter: "blur(0px)" },
-    { autoAlpha: 0, filter: "blur(8px)" },
-    ">1"
-  )
-  .fromTo(
-    emblems[3],
-    { autoAlpha: 0, filter: "blur(8px)" },
-    { autoAlpha: 1, filter: "blur(0px)" },
-    "<"
-  );
-
-console.log(emblems);
-
-if (isOpen) {
-  alternatingEmblems.play();
-}
+  .to($(emblems[2]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
+  .to($(emblems[3]), { autoAlpha: 1, filter: "blur(0px)" }, "<")
+  //   3 -> 0 (close the loop for seamless repeat)
+  .to($(emblems[3]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
+  .to($(emblems[0]), { autoAlpha: 1, filter: "blur(0px)" }, "<");
