@@ -14,6 +14,7 @@ module.exports = {
     ["home/about"]: "./src/home/about.js",
     ["home/hero"]: "./src/home/hero.js",
     ["index"]: "./src/index.js",
+    ["vechtstijl"]: "./src/vechtstijl.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),

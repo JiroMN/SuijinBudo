@@ -44,6 +44,7 @@ $("<style>").text(autofillStyle).appendTo("head");
 
 // Form Submission Bypass
 $("[ms-code-submit-new]").on("click", function (e) {
+  if ($(this).attr("[ms-code-submit-new]") == "ignore") return;
   e.preventDefault();
   if (isBusy) return;
   isBusy = true;

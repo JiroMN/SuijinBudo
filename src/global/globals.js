@@ -7,5 +7,4 @@ $("[copy-to-clipboard]").on("click", function () {
   const $value = $(this).attr("copy-to-clipboard");
 
   navigator.clipboard.writeText($value);
-  console.log("Copied " + $value);
 });
