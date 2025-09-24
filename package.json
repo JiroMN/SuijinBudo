@@ -13,6 +13,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "@barba/core": "^2.10.3"
+    "@barba/core": "^2.10.3",
+    "circletype": "^2.3.0"
   }
 }

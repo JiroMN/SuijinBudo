@@ -76,36 +76,51 @@ linkWrapper.on("mouseenter", function () {
 });
 
 // Toggling Menu
-navbarButton.on("click", function () {
-  const $btn = $(this);
+export function handleMenuToggle(desiredState) {
   const $menuBar = $(".navigation-menu-bar");
   const $menuLinksRow = $(".navigation-menu-row.links");
   const $menuInfoRow = $(".navigation-menu-row.info");
 
-  if ($btn.attr("menu-toggle") === "open") {
-    console.log("Open Menu");
-    let openTL = gsap.timeline({
-      onComplete: () => alternatingEmblems.play(0),
+  if (!isOpen && desiredState === "open") {
+    const openTL = gsap.timeline({
       defaults: { duration: 0.75 },
+      onComplete: () => {
+        alternatingEmblems.play(0);
+        isOpen = true;
+      },
     });
+
     openTL
       .to(navMenu, { autoAlpha: 1 })
       .fromTo($menuLinksRow, { xPercent: -100 }, { xPercent: 0 }, "<50%")
       .fromTo($menuInfoRow, { xPercent: 100 }, { xPercent: 0 }, "<")
       .fromTo($menuBar, { yPercent: -100 }, { yPercent: 0 }, "<50%");
-  } else if ($btn.attr("menu-toggle") === "close") {
-    console.log("Close Menu");
-    let closeTL = gsap.timeline({
-      onComplete: () => alternatingEmblems.pause(0),
-      defaults: {
-        duration: 0.75,
+  } else if (isOpen && desiredState === "close") {
+    const closeTL = gsap.timeline({
+      defaults: { duration: 0.75 },
+      onComplete: () => {
+        alternatingEmblems.pause(0);
+        isOpen = false;
       },
     });
+
     closeTL
       .fromTo($menuBar, { yPercent: 0 }, { yPercent: -100 })
       .fromTo($menuLinksRow, { xPercent: 0 }, { xPercent: -100 }, "<")
       .fromTo($menuInfoRow, { xPercent: 0 }, { xPercent: 100 }, "<")
       .fromTo(navMenu, { autoAlpha: 1 }, { autoAlpha: 0 });
+  } else {
+    // geen actie: ofwel dezelfde state gevraagd, of ongeldig desiredState
+    return;
+  }
+}
+
+navbarButton.on("click", function () {
+  const $btn = $(this);
+  if ($btn.attr("menu-toggle") === "open") {
+    handleMenuToggle("open");
+  } else if ($btn.attr("menu-toggle") === "close") {
+    handleMenuToggle("close");
   }
 });
 

@@ -2,28 +2,32 @@ import barba from "@barba/core";
 
 gsap.registerPlugin(ScrollSmoother);
 
-// Helpers
-// import { getHexCode } from "./helpers/getHexCode";
-
-// --- Globals ---
-// import { refreshScrollSmoother } from "./global/scrollSmoother";
+// --- Helper ---
+import { handleMenuToggle } from "./globalComponents/navigation";
 
 // --- Home modules ---
-import homeHeroInit from "./home/hero";
-import homeAboutInit from "./home/about";
+import homeHeroInit, { homeHeroDestroy } from "./home/hero";
+import homeAboutInit, { homeAboutDestroy } from "./home/about";
 
 // --- Vechtstijl modules ---
 import vechtstijlInit, { vechtstijlDestroy } from "./vechtstijl";
+
+// --- Over Ons modules ---
+import overOnsInit, { overOnsDestroy } from "./overOns";
 
 // Registry: namespace -> object with init and destroy arrays
 const PAGE = {
   home: {
     init: [homeHeroInit, homeAboutInit],
-    destroy: [], // add destroys here later
+    destroy: [homeHeroDestroy, homeAboutDestroy], // add destroys here later
   },
   vechtstijl: {
     init: [vechtstijlInit],
     destroy: [vechtstijlDestroy],
+  },
+  overOns: {
+    init: [overOnsInit],
+    destroy: [overOnsDestroy],
   },
 };
 
@@ -37,6 +41,7 @@ function runAll(ns, mode = "init") {
     if (typeof fn === "function") {
       try {
         fn();
+        console.log(`Running '${mode}' for '${ns}'`);
       } catch (e) {
         console.warn(`[${ns}] ${mode} error`, e);
       }
@@ -83,11 +88,20 @@ barba.hooks.once(() => {
 });
 
 barba.hooks.beforeLeave(() => {
+  handleMenuToggle("close");
   return killScrollSmoother();
 });
 
 barba.hooks.beforeEnter(() => {
   return createScrollSmoother();
+});
+
+barba.hooks.enter(() => {
+  return window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "instant",
+  });
 });
 
 barba.init({
@@ -140,6 +154,15 @@ barba.init({
       },
       beforeEnter() {
         runAll("vechtstijl", "init");
+      },
+    },
+    {
+      namespace: "over-ons",
+      beforeLeave() {
+        runAll("overOns", "destroy");
+      },
+      beforeEnter() {
+        runAll("overOns", "init");
       },
     },
   ],

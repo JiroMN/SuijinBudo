@@ -1,5 +1,5 @@
 import { getHexCode } from "../helpers/getHexCode";
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 let heroCtx; // <-- module-scope context
 
@@ -9,7 +9,7 @@ export default function homeHeroInit() {
 
   // Maak een context; alles binnen deze functie wordt eraan gekoppeld
   heroCtx = gsap.context(() => {
-    console.log("Home Hero");
+    let smoother = ScrollSmoother.get();
 
     const gradient = $(".hero-backdrop-gradient");
     const backdropCircle = $(".hero-backdrop-image-container");
@@ -20,8 +20,8 @@ export default function homeHeroInit() {
     gsap
       .timeline({
         delay: 0.4,
-        // onStart: () => disableScroll(),
-        // onComplete: () => enableScroll(),
+        onStart: () => smoother.paused(true),
+        onComplete: () => smoother.paused(false),
       })
       .from(backdropCircle, {
         autoAlpha: 0,
@@ -59,8 +59,8 @@ export default function homeHeroInit() {
 
     circleGrowTL
       .to(backdropCircle, {
-        width: "125vh",
-        height: "125vh",
+        width: "125vw",
+        height: "125vw",
         duration: 8,
       })
       .to(
@@ -71,6 +71,10 @@ export default function homeHeroInit() {
         },
         "<50%"
       )
+      .to(backdropCircle, {
+        width: "125vw",
+        height: "100vh",
+      })
       .to(
         [heading, paragraph],
         {

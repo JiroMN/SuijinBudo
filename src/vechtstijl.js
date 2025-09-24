@@ -7,13 +7,5 @@ export default function vechtstijlInit() {
 
   // Append Subtitle to title
   heroHeading.html(`${heroHeading.text()} – ${subTitle}`);
-
-  let count = 0;
-  counterLogging = setInterval(() => {
-    // console.log(++count);
-  }, 1000);
 }
-export function vechtstijlDestroy() {
-  console.log("Destroying Counter (vechtstijl)");
-  clearInterval(counterLogging);
-}
+export function vechtstijlDestroy() {}
