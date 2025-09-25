@@ -1,6 +1,4 @@
-let counterLogging;
 export default function vechtstijlInit() {
-  console.log("Vechtstijl");
   // Selectors
   const heroHeading = $(".vechtstijl-hero-content-wrapper").find("h1");
   const subTitle = heroHeading.attr("data-subtitle");

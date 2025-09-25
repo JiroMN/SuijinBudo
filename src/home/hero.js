@@ -19,7 +19,7 @@ export default function homeHeroInit() {
     // Load-in
     gsap
       .timeline({
-        delay: 0.4,
+        delay: 0.6,
         onStart: () => smoother.paused(true),
         onComplete: () => smoother.paused(false),
       })
@@ -59,8 +59,8 @@ export default function homeHeroInit() {
 
     circleGrowTL
       .to(backdropCircle, {
-        width: "125vw",
-        height: "125vw",
+        width: "100vw",
+        height: "100vw",
         duration: 8,
       })
       .to(
@@ -71,8 +71,8 @@ export default function homeHeroInit() {
         },
         "<50%"
       )
-      .to(backdropCircle, {
-        width: "125vw",
+      .set(backdropCircle, {
+        width: "100vw",
         height: "100vh",
       })
       .to(
@@ -98,5 +98,9 @@ export function homeHeroDestroy() {
   if (heroCtx) {
     heroCtx.revert();
     heroCtx = null;
+    gsap.set($("body, .page-wrapper"), {
+      background: getHexCode("--colored--background"),
+      duration: 0,
+    });
   }
 }

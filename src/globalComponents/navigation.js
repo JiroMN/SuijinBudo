@@ -91,8 +91,8 @@ export function handleMenuToggle(desiredState) {
     });
 
     openTL
-      .to(navMenu, { autoAlpha: 1 })
-      .fromTo($menuLinksRow, { xPercent: -100 }, { xPercent: 0 }, "<50%")
+      .set(navMenu, { autoAlpha: 1 })
+      .fromTo($menuLinksRow, { xPercent: -100 }, { xPercent: 0 }, "<")
       .fromTo($menuInfoRow, { xPercent: 100 }, { xPercent: 0 }, "<")
       .fromTo($menuBar, { yPercent: -100 }, { yPercent: 0 }, "<50%");
   } else if (isOpen && desiredState === "close") {

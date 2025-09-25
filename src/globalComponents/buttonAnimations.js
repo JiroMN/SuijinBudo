@@ -7,7 +7,7 @@ const buttonTextHidden = $(".button-text.hidden");
 // BaseState
 gsap.set(buttonTextHidden, { opacity: 100, yPercent: 100, autoAlpha: 0 });
 
-button.on("mouseenter", function () {
+$(document).on("mouseenter", ".button", function () {
   const $btn = $(this);
   const $shownText = $btn.find(".shown");
   const $hiddenText = $btn.find(".hidden");

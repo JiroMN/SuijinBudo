@@ -99,5 +99,10 @@ export function homeAboutDestroy() {
   if (aboutCtx) {
     aboutCtx.revert();
     aboutCtx = null;
+    // Fix Background color switch on transition
+    gsap.set($("body, .page-wrapper"), {
+      background: getHexCode("--colored--background"),
+      duration: 0,
+    });
   }
 }

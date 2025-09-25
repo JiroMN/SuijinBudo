@@ -49,7 +49,9 @@ function runAll(ns, mode = "init") {
   }
 }
 
-gsap.set(".page-transition", { yPercent: -100, opacity: 1 });
+gsap.set(".page-transition", { opacity: 1 });
+gsap.set(".page-transition-col.left", { xPercent: -100 });
+gsap.set(".page-transition-col.right", { xPercent: 100 });
 
 // -- ScrollSmoother --
 let smoother;
@@ -57,11 +59,9 @@ let smoother;
 function killScrollSmoother() {
   ScrollSmoother?.get()?.kill();
   smoother = null;
-  console.log("[killScrollSmoother()]", ScrollSmoother.get());
 }
 
 function createScrollSmoother() {
-  console.log("[createScrollSmoother()] Before Creation", ScrollSmoother.get());
   smoother = ScrollSmoother.create({
     wrapper: "#ScrollWrapper",
     content: "#ScrollContent",
@@ -69,17 +69,16 @@ function createScrollSmoother() {
     smoothTouch: 0.5,
     effects: true,
   });
-  console.log("[createScrollSmoother()] After Creation", ScrollSmoother.get());
 }
 
-function globalRefresh() {
-  // refreshScrollSmoother();
-  // let triggers = ScrollTrigger.getAll();
-  // triggers.forEach((trigger) => {
-  //   trigger.kill();
-  // });
-}
+function globalRefresh() {}
+
 barba.hooks.afterEnter(() => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "instant",
+  });
   return globalRefresh();
 });
 
@@ -96,42 +95,59 @@ barba.hooks.beforeEnter(() => {
   return createScrollSmoother();
 });
 
-barba.hooks.enter(() => {
-  return window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "instant",
-  });
-});
+// --- Timelines ---
+let slideOpen = gsap
+  .timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.6 } })
+  .to(".page-transition-col.left", {
+    xPercent: -100,
+  })
+  .to(
+    ".page-transition-col.right",
+    {
+      xPercent: 100,
+    },
+    "<"
+  );
+
+let slideClose = gsap
+  .timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.6 } })
+  .to(".page-transition-col.left", {
+    xPercent: 0,
+  })
+  .to(
+    ".page-transition-col.right",
+    {
+      xPercent: 0,
+    },
+    "<"
+  );
 
 barba.init({
-  debug: true,
+  debug: false,
   sync: false,
   prevent: ({ el, href }) => href == "#",
   transitions: [
     {
       name: "slide",
       beforeLeave() {
-        gsap.set(".page-transition", { yPercent: -100 });
+        return gsap
+          .timeline()
+          .set(".page-transition-col.left", { xPercent: -100 })
+          .set(".page-transition-col.right", { xPercent: 100 });
       },
       leave() {
-        return gsap.to(".page-transition", {
-          yPercent: 0,
-          duration: 0.6,
-          ease: "power2.inOut",
-        });
+        return slideClose.restart();
       },
       beforeEnter() {
-        return gsap.set(".page-transition", { yPercent: 0 });
+        return gsap
+          .timeline({ defaults: { ease: "power2.inOut", duration: 0.6 } })
+          .set(".page-transition-col.left", { xPercent: 0 })
+          .set(".page-transition-col.right", { xPercent: 0 });
       },
       enter() {
         // Open the lid after swap
         setTimeout(function () {
-          return gsap.to(".page-transition", {
-            yPercent: 100,
-            duration: 0.6,
-            ease: "power2.inOut",
-          });
+          return slideOpen.restart();
         }, 250);
       },
     },
