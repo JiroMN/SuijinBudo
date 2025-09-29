@@ -59,9 +59,9 @@ export default function homeHeroInit() {
 
     circleGrowTL
       .to(backdropCircle, {
-        width: "100vw",
-        height: "100vw",
-        duration: 8,
+        width: "75vw",
+        height: "75vw",
+        duration: 4,
       })
       .to(
         backdropCircle,
@@ -71,10 +71,15 @@ export default function homeHeroInit() {
         },
         "<50%"
       )
-      .set(backdropCircle, {
-        width: "100vw",
-        height: "100vh",
-      })
+      .to(
+        backdropCircle,
+        {
+          width: "100vw",
+          height: "100vh",
+          duration: 4,
+        },
+        "<"
+      )
       .to(
         [heading, paragraph],
         {
