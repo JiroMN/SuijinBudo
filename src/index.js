@@ -15,6 +15,9 @@ import vechtstijlInit, { vechtstijlDestroy } from "./vechtstijl";
 // --- Over Ons modules ---
 import overOnsInit, { overOnsDestroy } from "./overOns";
 
+// --- Prices modules ---
+import pricesInit from "./prices";
+
 // Registry: namespace -> object with init and destroy arrays
 const PAGE = {
   home: {
@@ -28,6 +31,10 @@ const PAGE = {
   overOns: {
     init: [overOnsInit],
     destroy: [overOnsDestroy],
+  },
+  prices: {
+    init: [pricesInit],
+    destroy: [],
   },
 };
 
@@ -179,6 +186,24 @@ barba.init({
       },
       beforeEnter() {
         runAll("overOns", "init");
+      },
+    },
+    {
+      namespace: "onze-geschiedenis",
+      beforeLeave() {
+        return;
+      },
+      beforeEnter() {
+        return;
+      },
+    },
+    {
+      namespace: "prices",
+      beforeLeave() {
+        return;
+      },
+      beforeEnter() {
+        runAll("prices", "init");
       },
     },
   ],

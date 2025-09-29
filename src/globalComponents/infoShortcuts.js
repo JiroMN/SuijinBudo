@@ -11,13 +11,37 @@ gsap.set(".info-shortcut-icon.clicked", {
 infoShortcut.on("click", function () {
   const $shownIcon = $(this).find(".info-shortcut-icon.shown");
   const $hiddenIcon = $(this).find(".info-shortcut-icon.clicked");
+  const $text = $(this).find(".info-shortcut-text");
+  const $currTextValue = $text.text();
+  const $isExternalLink = $(this).attr("target") == "_blank";
 
   gsap
     .timeline({})
     .to($shownIcon, { autoAlpha: 0, yPercent: -100 })
     .to($hiddenIcon, { autoAlpha: 1, yPercent: 0 }, "<")
+    .to($text, { autoAlpha: 0, yPercent: -100 }, "<")
+    .add(() => {
+      $text.text($isExternalLink ? "GEOPEND" : "GEKOPIEERD");
+    }, "<")
+    .fromTo(
+      $text,
+      { autoAlpha: 0, yPercent: 100 },
+      { autoAlpha: 1, yPercent: 0 },
+      "<"
+    )
+    // Reset
     .to($shownIcon, { autoAlpha: 1, yPercent: 0 }, "<2")
-    .to($hiddenIcon, { autoAlpha: 0, yPercent: 100 }, "<");
+    .to($hiddenIcon, { autoAlpha: 0, yPercent: 100 }, "<")
+    .to($text, { autoAlpha: 0, yPercent: 100 }, "<")
+    .add(() => {
+      $text.text($currTextValue);
+    }, "<")
+    .fromTo(
+      $text,
+      { autoAlpha: 0, yPercent: -100 },
+      { autoAlpha: 1, yPercent: 0 },
+      "<"
+    );
 });
 
 // Hover Handler
