@@ -19,63 +19,71 @@ function formatPrices() {
   });
 }
 
+// Contexts
+let filterSelectorCtx;
+let viewsCtx;
+
 function styleFilterSelectors(el) {
-  gsap
-    .timeline({})
-    // Reset All
-    .to(".prijzen-filter-selector-item", {
-      backgroundColor: "transparent",
-    })
-    .to(
-      ".prijzen-filter-selector-item > *",
-      {
-        color: getHexCode("--background-tones--75"),
-      },
-      "<"
-    )
-    // Set clicked element
-    .to(
-      el,
-      {
-        backgroundColor: getHexCode("--colored--background"),
-        overwrite: true,
-      },
-      "<"
-    )
-    .to(
-      el.children(),
-      {
-        color: getHexCode("--colored--foreground"),
-        overwrite: true,
-      },
-      "<"
-    );
+  filterSelectorCtx = gsap.context(() => {
+    gsap
+      .timeline({})
+      // Reset All
+      .to(".prijzen-filter-selector-item", {
+        backgroundColor: "transparent",
+      })
+      .to(
+        ".prijzen-filter-selector-item > *",
+        {
+          color: getHexCode("--background-tones--75"),
+        },
+        "<"
+      )
+      // Set clicked element
+      .to(
+        el,
+        {
+          backgroundColor: getHexCode("--colored--background"),
+          overwrite: true,
+        },
+        "<"
+      )
+      .to(
+        el.children(),
+        {
+          color: getHexCode("--colored--foreground"),
+          overwrite: true,
+        },
+        "<"
+      );
+  });
 }
 
 function animateViews(filter) {
   const el = $(`[data-linked-price-filter=${filter}]`);
-  gsap
-    .timeline({ defaults: { duration: 0.35 } })
-    .to(".prijzen-table-col-wrapper, .location-time-view", {
-      autoAlpha: 0,
-    })
-    .fromTo(
-      el,
-      {
+  viewsCtx.context(() => {
+    gsap
+      .timeline({ defaults: { duration: 0.35 } })
+      .to(".prijzen-table-col-wrapper, .location-time-view", {
         autoAlpha: 0,
-      },
-      {
-        autoAlpha: 1,
-        overwrite: true,
-      },
-      "<"
-    )
-    .set(el, { position: "relative" }, ">")
-    .set(
-      $(".prijzen-table-col-wrapper, .location-time-view").not(el),
-      { position: "absolute" },
-      "<"
-    );
+      })
+      .fromTo(
+        el,
+        {
+          autoAlpha: 0,
+        },
+        {
+          autoAlpha: 1,
+          overwrite: true,
+        },
+        "<"
+      )
+      .set(el, { position: "relative" }, ">")
+      .set(
+        $(".prijzen-table-col-wrapper, .location-time-view").not(el),
+        { position: "absolute" },
+        "<"
+      );
+  });
 }
 
 export default function pricesInit() {
@@ -97,4 +105,16 @@ export default function pricesInit() {
   });
 
   formatPrices();
+}
+
+export function pricesDestoy() {
+  $(document).off(".section.prices");
+  if (filterSelectorCtx) {
+    filterSelectorCtx.revert();
+    filterSelectorCtx = null;
+  }
+  if (viewsCtx) {
+    viewsCtx.revert();
+    viewsCtx = null;
+  }
 }

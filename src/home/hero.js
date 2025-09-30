@@ -19,8 +19,10 @@ export default function homeHeroInit() {
     // Load-in
     gsap
       .timeline({
-        delay: 0.6,
-        onStart: () => smoother.paused(true),
+        delay: 0.75,
+        onStart: () => {
+          smoother.paused(true);
+        },
         onComplete: () => smoother.paused(false),
       })
       .from(backdropCircle, {

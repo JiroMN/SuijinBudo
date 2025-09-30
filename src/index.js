@@ -16,7 +16,7 @@ import vechtstijlInit, { vechtstijlDestroy } from "./vechtstijl";
 import overOnsInit, { overOnsDestroy } from "./overOns";
 
 // --- Prices modules ---
-import pricesInit from "./prices";
+import pricesInit, { pricesDestoy } from "./prices";
 
 // Registry: namespace -> object with init and destroy arrays
 const PAGE = {
@@ -34,7 +34,7 @@ const PAGE = {
   },
   prices: {
     init: [pricesInit],
-    destroy: [],
+    destroy: [pricesDestoy],
   },
 };
 
@@ -200,7 +200,7 @@ barba.init({
     {
       namespace: "prices",
       beforeLeave() {
-        return;
+        runAll("prices", "destroy");
       },
       beforeEnter() {
         runAll("prices", "init");
