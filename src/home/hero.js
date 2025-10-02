@@ -9,13 +9,12 @@ export default function homeHeroInit() {
 
   // Maak een context; alles binnen deze functie wordt eraan gekoppeld
   heroCtx = gsap.context(() => {
-    let smoother = ScrollSmoother.get();
-
     const gradient = $(".hero-backdrop-gradient");
+    const backdropLines = $(".hero-backdrop-illustration");
     const backdropCircle = $(".hero-backdrop-image-container");
     const heading = $(".hero-heading");
     const paragraph = $(".hero-paragraph");
-
+    let smoother = ScrollSmoother.get();
     // Load-in
     gsap
       .timeline({
@@ -54,7 +53,6 @@ export default function homeHeroInit() {
         start: "top top",
         end: "top+=400px top",
         scrub: 1,
-        once: true,
       },
       defaults: { ease: "power1.out" },
     });
@@ -73,6 +71,7 @@ export default function homeHeroInit() {
         },
         "<50%"
       )
+      .to([gradient, backdropLines], { autoAlpha: 0, duration: 2 }, "<")
       .to(
         backdropCircle,
         {
@@ -89,7 +88,7 @@ export default function homeHeroInit() {
         },
         "<"
       )
-      .to(gradient, { autoAlpha: 0, duration: 2 }, "<")
+
       .to(
         $("body, .page-wrapper"),
         {
