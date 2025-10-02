@@ -3,7 +3,6 @@ import { getHexCode } from "../helpers/getHexCode";
 const navbar = $(".navigation-bar");
 const navMenu = $(".navigation-menu");
 const navbarButton = $(".navigation-bar-button-wrapper");
-const emblems = $(".navigation-menu-info-emblem");
 
 const linkWrapper = $(".navigation-menu-link-list-item");
 
@@ -12,8 +11,6 @@ let isOpen = false;
 
 // Base States
 gsap.set(navMenu, { display: "flex", autoAlpha: 0 });
-gsap.set(emblems.not(emblems.eq(0)), { autoAlpha: 0, filter: "blur(8px)" });
-gsap.set(emblems.eq(0), { autoAlpha: 1, filter: "blur(0px)" });
 
 // Button Hover
 navbarButton.on("mouseenter", function () {
@@ -85,7 +82,6 @@ export function handleMenuToggle(desiredState) {
     const openTL = gsap.timeline({
       defaults: { duration: 0.75 },
       onComplete: () => {
-        alternatingEmblems.play(0);
         isOpen = true;
       },
     });
@@ -99,7 +95,6 @@ export function handleMenuToggle(desiredState) {
     const closeTL = gsap.timeline({
       defaults: { duration: 0.75 },
       onComplete: () => {
-        alternatingEmblems.pause(0);
         isOpen = false;
       },
     });
@@ -123,23 +118,3 @@ navbarButton.on("click", function () {
     handleMenuToggle("close");
   }
 });
-
-// Navigation Menu Emblems
-let alternatingEmblems = gsap.timeline({
-  paused: true,
-  repeat: -1,
-  defaults: { duration: 1, ease: "power2.out" },
-});
-alternatingEmblems
-  //   0 -> 1
-  .to($(emblems[0]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
-  .to($(emblems[1]), { autoAlpha: 1, filter: "blur(0px)" }, "<")
-  //   1 -> 2
-  .to($(emblems[1]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
-  .to($(emblems[2]), { autoAlpha: 1, filter: "blur(0px)" }, "<")
-  //   2 -> 3
-  .to($(emblems[2]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
-  .to($(emblems[3]), { autoAlpha: 1, filter: "blur(0px)" }, "<")
-  //   3 -> 0 (close the loop for seamless repeat)
-  .to($(emblems[3]), { autoAlpha: 0, filter: "blur(8px)" }, ">1")
-  .to($(emblems[0]), { autoAlpha: 1, filter: "blur(0px)" }, "<");

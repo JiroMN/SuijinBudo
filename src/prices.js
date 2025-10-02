@@ -60,7 +60,7 @@ function styleFilterSelectors(el) {
 
 function animateViews(filter) {
   const el = $(`[data-linked-price-filter=${filter}]`);
-  viewsCtx.context(() => {
+  viewsCtx = gsap.context(() => {
     gsap
       .timeline({ defaults: { duration: 0.35 } })
       .to(".prijzen-table-col-wrapper, .location-time-view", {
