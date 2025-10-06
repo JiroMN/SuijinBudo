@@ -14,7 +14,6 @@ export default function overOnsInit() {
     mm.add("(min-width: 568px)", () => {
       const personImagesArr = gsap.utils.toArray(personImage);
       personImagesArr.forEach((img) => {
-        const sibling = $(img).siblings()[0];
         gsap.set(img, { willChange: "transform" });
         gsap
           .timeline({
@@ -25,13 +24,7 @@ export default function overOnsInit() {
               scrub: true,
             },
           })
-          .fromTo(img, { yPercent: -10 }, { yPercent: 10, ease: "none" })
-          .fromTo(
-            sibling,
-            { yPercent: -50 },
-            { yPercent: 50, ease: "none" },
-            "<"
-          );
+          .fromTo(img, { yPercent: -10 }, { yPercent: 10, ease: "none" });
       });
     });
 

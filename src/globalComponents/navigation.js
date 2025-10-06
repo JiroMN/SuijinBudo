@@ -6,8 +6,9 @@ const navbarButton = $(".navigation-bar-button-wrapper");
 
 const linkWrapper = $(".navigation-menu-link-list-item");
 
-// Flags
-let isOpen = false;
+// State (single source of truth in DOM)
+navMenu.attr("data-navmenu-state", "closed");
+const isOpen = () => navMenu.attr("data-navmenu-state") === "open";
 
 // Base States
 gsap.set(navMenu, { display: "flex", autoAlpha: 0 });
@@ -78,11 +79,15 @@ export function handleMenuToggle(desiredState) {
   const $menuLinksRow = $(".navigation-menu-row.links");
   const $menuInfoRow = $(".navigation-menu-row.info");
 
-  if (!isOpen && desiredState === "open") {
+  // Guards based on DOM state
+  if (desiredState === "open" && isOpen()) return;
+  if (desiredState === "close" && !isOpen()) return;
+
+  if (desiredState === "open" && !isOpen()) {
     const openTL = gsap.timeline({
       defaults: { duration: 0.75 },
-      onComplete: () => {
-        isOpen = true;
+      onStart: () => {
+        navMenu.attr("data-navmenu-state", "open");
       },
     });
 
@@ -91,11 +96,11 @@ export function handleMenuToggle(desiredState) {
       .fromTo($menuLinksRow, { xPercent: -100 }, { xPercent: 0 }, "<")
       .fromTo($menuInfoRow, { xPercent: 100 }, { xPercent: 0 }, "<")
       .fromTo($menuBar, { yPercent: -100 }, { yPercent: 0 }, "<50%");
-  } else if (isOpen && desiredState === "close") {
+  } else if (desiredState === "close" && isOpen()) {
     const closeTL = gsap.timeline({
       defaults: { duration: 0.75 },
-      onComplete: () => {
-        isOpen = false;
+      onStart: () => {
+        navMenu.attr("data-navmenu-state", "closed");
       },
     });
 
